@@ -65,7 +65,13 @@ public class FilesProcessor implements Runnable {
                         }
                     }
                     System.out.println("saving " + sb.toString() + ".mp3");
-                    mp3File.save(sb.toString() + ".mp3");
+                    try {
+                        mp3File.save(sb.toString() + ".mp3");
+                    }
+                    catch(Exception e) {
+                        System.out.println(e.getClass().getSimpleName() + " while saving mp3 file.");
+                    }
+
                 }
             }
             System.out.println("done processing mp3 files");
