@@ -34,16 +34,16 @@ public class MusicWatcher {
                   List<WatchEvent<?>> events = watchKey.pollEvents();
                   for (WatchEvent event : events) {
                       Path dir = keys.get(watchKey);
-                      Path newPath = dir.resolve((Path)event.context());
-                      System.out.println(event.kind().toString() + ": " + newPath);
                       if (dir == null) {
-                          System.err.println("WatchKey not recognized!!");
+                          System.err.println("WatchKey not recognized!");
                           continue;
                       }
+                      Path newPath = dir.resolve((Path)event.context());
+                      System.out.println(event.kind().toString() + ": " + newPath);
                       if(!newPath.toFile().isDirectory() && newPath.toString().toLowerCase().endsWith(".mp3")) {
                           System.out.println(newPath + " is mp3 file");
                           if(!folders.containsKey(dir)) {
-                              folders.put(dir,new HashSet<Path>());
+                              folders.put(dir, new HashSet<Path>());
                           }
                           folders.get(dir).add(newPath);
                       }
@@ -52,7 +52,6 @@ public class MusicWatcher {
                           registerAll(newPath, keys, watchService);
 
                       }
-
                   }
                   if (!watchKey.reset()) {
                       keys.remove(watchKey);
