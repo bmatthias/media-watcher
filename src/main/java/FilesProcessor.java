@@ -69,7 +69,7 @@ public class FilesProcessor implements Runnable {
                         mp3File.save(sb.toString() + ".mp3");
                     }
                     catch(Exception e) {
-                        System.out.println(e.getClass().getSimpleName() + " while saving mp3 file.");
+                        System.out.println(e.getClass().getSimpleName() + " while saving file " + sb.toString() + ".mp3");
                     }
 
                 }
