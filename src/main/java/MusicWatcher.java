@@ -49,8 +49,6 @@ public class MusicWatcher {
                       }
                       else if(newPath.toFile().isDirectory()) {
                           System.out.println(newPath + " is directory");
-                          //WatchKey newKey = newPath.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);
-                          //keys.put(newKey,newPath);
                           registerAll(newPath, keys, watchService);
 
                       }
@@ -65,7 +63,7 @@ public class MusicWatcher {
                }
             }
         } catch (Exception e) {
-
+            System.out.println("Exception");
         }
     }
 
@@ -82,14 +80,12 @@ public class MusicWatcher {
 
     private static void register(Path dir, Map<WatchKey,Path> keys, WatchService watchService) throws IOException {
         WatchKey key = dir.register(watchService, ENTRY_CREATE, ENTRY_MODIFY);
-        if (true) {
-            Path prev = keys.get(key);
-            if (prev == null) {
-                System.out.format("register: %s\n", dir);
-            } else {
-                if (!dir.equals(prev)) {
-                    System.out.format("update: %s -> %s\n", prev, dir);
-                }
+        Path prev = keys.get(key);
+        if (prev == null) {
+            System.out.format("register: %s\n", dir);
+        } else {
+            if (!dir.equals(prev)) {
+                System.out.format("update: %s -> %s\n", prev, dir);
             }
         }
         keys.put(key, dir);

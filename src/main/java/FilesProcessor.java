@@ -46,8 +46,13 @@ public class FilesProcessor implements Runnable {
 
                     StringBuffer sb = new StringBuffer(config.getTargetDir().toString() + File.separator);
 
-                    for(String subFolder : config.getFolderStructure()) {
-                        sb.append(id3v2.getClass().getMethod(subFolder).invoke(id3v2));
+                    for(String subFolderMethod : config.getFolderStructure()) {
+                        String subFolderName = (String)id3v2.getClass().getMethod(subFolderMethod).invoke(id3v2);
+                        if(subFolderMethod == "getAlbumArtist" && (subFolderMethod.startsWith("The ") ||subFolderMethod.startsWith("Die "))) {
+                            String suffix = subFolderName.substring(5);
+                            subFolderName = subFolderName.replace("The ", "") + ", " + suffix;
+                        }
+                        sb.append(subFolderName);
                         sb.append(File.separator);
                     }
 
@@ -89,6 +94,23 @@ public class FilesProcessor implements Runnable {
     }
 
     private String getFirstArtist(ID3v2 id3v2) {
-        return id3v2.getArtist().split("/")[0].split(",")[0].split(";")[0].split("featuring")[0].split("feat.")[0].split("feat")[0].trim();
+        return id3v2.getArtist()
+                .split("/")[0]
+                .split(",")[0]
+                .split(";")[0]
+                .split(" featuring ")[0]
+                .split(" Featuring ")[0]
+                .split(" feat_ ")[0]
+                .split(" feat. ")[0]
+                .split(" feat ")[0]
+                .split(" Feat_ ")[0]
+                .split(" Feat. ")[0]
+                .split(" Feat ")[0]
+                .split(" ft_ ")[0]
+                .split(" ft. ")[0]
+                .split(" Ft. ")[0]
+                .split(" ft ")[0]
+                .split(" Ft ")[0]
+                .split(" FT ")[0].trim();
     }
 }
