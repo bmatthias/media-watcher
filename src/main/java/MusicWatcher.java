@@ -23,7 +23,7 @@ public class MusicWatcher {
             keys.put(key,config.getSourceDir());
 
             for(;;) {
-               WatchKey watchKey = watchService.poll(3, TimeUnit.SECONDS);
+               WatchKey watchKey = watchService.poll(60, TimeUnit.SECONDS);
                if(watchKey == null && !folders.isEmpty()) {
                    FilesProcessor filesProcessor = new FilesProcessor(new HashMap<>(folders), config);
                    Thread t = new Thread(filesProcessor);
